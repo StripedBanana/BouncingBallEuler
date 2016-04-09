@@ -6,7 +6,7 @@ class Ball
 {
     public:
         Ball();
-        Ball(float x, float y, float sx, float sy, float accx, float accy, float radius, float mass);
+        Ball(float x, float y, float sx, float sy, float accx, float accy, float radius, float mass, sf::Color color);
         void handleWallCollision();
         virtual ~Ball();
 
@@ -21,9 +21,11 @@ class Ball
         float getAccX(){return acc.x;};
         float getAccY(){return acc.y;};
         float getRadius(){return radius;};
+        sf::CircleShape getBallShape(){return ballShape;};
 
         // Setters
         void setRadius(float newr);
+        void setColor(sf::Color color);
         void setXY(float x, float y);
         void setSpeedXY(float sx, float sy);
         void setAccXY(float newaccx, float newaccy);
@@ -33,6 +35,8 @@ class Ball
     private:
         // Ball positions
         sf::Vector2f pos, speed, acc;
+        sf::CircleShape ballShape;
+        sf::Color color;
         float radius;
         float mass;
 };
