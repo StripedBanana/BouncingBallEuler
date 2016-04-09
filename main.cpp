@@ -35,11 +35,10 @@ int main()
     double x, y, sx, sy;
     vector<Ball*> balls(nbBalls);
     vector<Ball*> returnBalls(nbBalls);
-    vector<sf::CircleShape*> ballShapes(nbBalls);
     Ball* ballTest;
-    sf::CircleShape* ballTestShape;
     Quadtree* quad = new Quadtree(0, 0, 0, LENGTH, HEIGHT);
     bool collision;
+    sf::Vector2i position(0, 0);
 
     // Initializing SFML window
     sf::ContextSettings settings;
@@ -50,30 +49,29 @@ int main()
     // Initializing declared arrays
     for(int i=0; i<nbBalls; i++)
     {
-        ballShapes[i] = new sf::CircleShape(ballRadius);
         sf::Color color(rand()%255+1, rand()%255+1, rand()%255+1, 255);
-        (*ballShapes[i]).setFillColor(color);
         x = rand()%(LENGTH-2*ballRadius);
         y = rand()%(HEIGHT-2*ballRadius);
         sx = rand()%1000+1;
         sy = rand()%1000+1;
-        balls[i] = new Ball(x, y, sx, sy, 0, accY, ballRadius, 1);
+        balls[i] = new Ball(x, y, sx, sy, 0, accY, ballRadius, 1, color);
     }
 
-    pool(balls);
+    //pool(balls);
     //bowling(balls);
-
-
 
     // Process loop
     while (window.isOpen())
     {
         // Event handler
         sf::Event event;
+        position = sf::Mouse::getPosition(window); // mouse position refresh
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-                window.close();
+            if (event.type == sf::Event::Closed) window.close();
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                // stuff to do when left button is pressed
+            }
         }
 
         // Resetting the window and the quadtree
@@ -95,8 +93,7 @@ int main()
         {
             balls[i]->updatePos(step);
             balls[i]->handleWallCollision();
-            (*ballShapes[i]).setPosition(balls[i]->getX(), balls[i]->getY());
-            window.draw(*ballShapes[i]);
+            window.draw(balls[i]->getBallShape());
         }
 
         // Loop detecting in-between objects collisions
