@@ -3,6 +3,7 @@
 #include <time.h>
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <math.h>
 
 using namespace std;
@@ -41,6 +42,8 @@ int main()
     sf::Vector2i position(0, 0), pos0(0, 0);
     sf::CircleShape cursor(5);
     cursor.setFillColor(sf::Color::Red);
+    sf::Text info("0", MyFont, 10);
+    info.setColor(sf::Color::Black);
 
     // Initializing SFML window
     sf::ContextSettings settings;
@@ -93,6 +96,7 @@ int main()
             {
                 leftMousePressed = false; // resetting flag
                 balls[balls.size()-1]->setSpeedXY((pos0.x - position.x)*10, (pos0.y - position.y)*10);
+                balls[balls.size()-1]->setAccXY(0, accY);
                 cout << "released" << endl;
             }
         }
@@ -112,6 +116,11 @@ int main()
             balls[i]->updatePos(step);
             balls[i]->handleWallCollision();
             window.draw(balls[i]->getBallShape());
+            std::ostringstream ss; // only output stream!
+            ss << i;
+            info.setString(ss.str());
+            info.setPosition(balls[i]->getX(), balls[i]->getY());
+            window.draw(info);
         }
 
         // Loop detecting in-between objects collisions
@@ -162,6 +171,7 @@ int main()
         ss << framerate;
         fps.setString(ss.str().c_str());
         window.draw(fps);
+
         cout << "cursor: (" << cursor.getPosition().x << "," << cursor.getPosition().y << ")" << endl;
         window.draw(cursor);
 
