@@ -5,8 +5,7 @@ You can add a ball and give it an initial speed by left clicking and dragging in
 ![alt tag](http://i.imgur.com/9kmdTgH.gif)
 
 It uses Euler integration to calculate a ball trajectory, and a quadtree to avoid an o(n²) collision detection algorithm:
-
-![alt tag] (http://i.imgur.com/Fvj9FUk.gif)
+![alt tag](http://i.imgur.com/Fvj9FUk.gif)
 
 Collision with the walls and balls is handled.
 
