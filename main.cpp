@@ -37,8 +37,10 @@ int main()
     vector<Ball*> returnBalls(nbBalls);
     Ball* ballTest;
     Quadtree* quad = new Quadtree(0, 0, 0, LENGTH, HEIGHT);
-    bool collision;
-    sf::Vector2i position(0, 0);
+    bool collision, leftMousePressed = false;
+    sf::Vector2i position(0, 0), pos0(0, 0);
+    sf::CircleShape cursor(5);
+    cursor.setFillColor(sf::Color::Red);
 
     // Initializing SFML window
     sf::ContextSettings settings;
@@ -47,7 +49,7 @@ int main()
     window.setVerticalSyncEnabled(true);
 
     // Initializing declared arrays
-    for(int i=0; i<nbBalls; i++)
+    for(int i=0; i<balls.size(); i++)
     {
         sf::Color color(rand()%255+1, rand()%255+1, rand()%255+1, 255);
         x = rand()%(LENGTH-2*ballRadius);
@@ -63,24 +65,40 @@ int main()
     // Process loop
     while (window.isOpen())
     {
-        // Event handler
-        sf::Event event;
-        position = sf::Mouse::getPosition(window); // mouse position refresh
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed) window.close();
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-                // stuff to do when left button is pressed
-            }
-        }
-
         // Resetting the window and the quadtree
         window.clear();
         quad->clr();
-        //cout << "(" << balls[0]->getX() << "," << balls[0]->getY() << ")" << endl;
+
+        // Event handler
+        sf::Event event;
+        position = sf::Mouse::getPosition(window); // mouse position refresh
+        cursor.setPosition(position.x, position.y);
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed) window.close();
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !leftMousePressed) // first press
+            {
+                leftMousePressed = true; // setting flag
+                pos0.x = position.x; // save original cursor position
+                pos0.y = position.y;
+                balls.push_back(new Ball(position.x - ballRadius, position.y - ballRadius, 0, 0, 0, 0, ballRadius, 1, sf::Color(rand()%255+1, rand()%255+1, rand()%255+1, 255))); // add a ball at the cursor position, not moving (yet)
+
+                cout << "first press" << endl;
+            } else if (leftMousePressed && sf::Mouse::isButtonPressed(sf::Mouse::Left)) // left mouse button is kept pressed
+            {
+                // stuff to do when left button is kept pressed
+                cout << "pressing" << endl;
+
+            } else if (leftMousePressed && !sf::Mouse::isButtonPressed(sf::Mouse::Left)) // left mouse button has been released
+            {
+                leftMousePressed = false; // resetting flag
+                balls[balls.size()-1]->setSpeedXY((pos0.x - position.x)*10, (pos0.y - position.y)*10);
+                cout << "released" << endl;
+            }
+        }
 
         // Loop setting up the quadtree
-        for(int i=0; i<nbBalls; i++)
+        for(int i=0; i<balls.size(); i++)
         {
             quad->insertion(balls[i]);
         }
@@ -89,7 +107,7 @@ int main()
         quad->display(&window);
 
         // Loop updating objects positions and detecting collisions
-        for(int i=0; i<nbBalls; i++)
+        for(int i=0; i<balls.size(); i++)
         {
             balls[i]->updatePos(step);
             balls[i]->handleWallCollision();
@@ -97,7 +115,7 @@ int main()
         }
 
         // Loop detecting in-between objects collisions
-        for(int i=0; i<nbBalls; i++)
+        for(int i=0; i<balls.size(); i++)
         {
             // Running quadtree for list of possible collisions, one object at a time
             ballTest = balls[i];
@@ -144,9 +162,11 @@ int main()
         ss << framerate;
         fps.setString(ss.str().c_str());
         window.draw(fps);
+        cout << "cursor: (" << cursor.getPosition().x << "," << cursor.getPosition().y << ")" << endl;
+        window.draw(cursor);
 
         // Updating window
-        debug(&window, balls); // debug display
+        //debug(&window, balls); // debug display
         window.display();
     }
 

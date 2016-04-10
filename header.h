@@ -5,7 +5,7 @@
 #define HEADER_H
 
 #define HEIGHT 700
-#define LENGTH 700
+#define LENGTH 1200
 #define PI 3.14159265
 
  // Prototypes
