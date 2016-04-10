@@ -1,16 +1,17 @@
 # depslib dependency file v1.0
-1460298380 source:c:\users\julien\documents\github\bouncing-ball-euler\bouncingballeuler\main.cpp
+1460316393 source:c:\users\julien\documents\github\bouncing-ball-euler\bouncingballeuler\main.cpp
 	"header.h"
 	"Quadtree.h"
 	<time.h>
 	<iostream>
 	<sstream>
+	<string>
 	<math.h>
 
 1460236135 c:\users\julien\documents\github\bouncing-ball-euler\bouncingballeuler\ball.h
 	<SFML/Graphics.hpp>
 
-1460298407 c:\users\julien\documents\github\bouncing-ball-euler\bouncingballeuler\header.h
+1460318865 c:\users\julien\documents\github\bouncing-ball-euler\bouncingballeuler\header.h
 	"Ball.h"
 	<SFML/Graphics.hpp>
 
