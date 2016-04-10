@@ -10,5 +10,5 @@ It uses Euler integration to calculate a ball trajectory, and a quadtree to avoi
 Collision with the walls and balls is handled.
 
 It also handles inelastic collisions and gravity effect:
-![alt tag](http://i.imgur.com/F73cq2J.gif)
+
 
