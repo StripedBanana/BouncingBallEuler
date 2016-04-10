@@ -9,4 +9,5 @@ Collision with the walls and balls is handled.
 It also handles inelastic collisions and gravity effect:
 ![alt tag](http://i.imgur.com/F73cq2J.gif)
 
-
+It uses Euler integration to compute a ball's trajectory, and a quadtree to avoid writing an o(n²) algorithm for collision detection:
+![alt tag](http://i.imgur.com/F73cq2J.gif)
